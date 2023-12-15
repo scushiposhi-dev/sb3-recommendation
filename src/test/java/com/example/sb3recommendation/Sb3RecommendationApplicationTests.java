@@ -17,5 +17,4 @@ class Sb3RecommendationApplicationTests extends MonogoDbTestBase {
     void contextLoads() {
         assertNotNull(MonogoDbTestBase.class);
     }
-
 }
