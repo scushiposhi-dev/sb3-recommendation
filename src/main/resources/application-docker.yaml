@@ -1,0 +1,20 @@
+server.port: 8080
+
+app.eureka-server: eureka
+
+spring.data:
+  mongodb:
+    host: mongodb
+
+spring.kafka.bootstrap-servers: kafka:9092
+
+spring.cloud.stream:
+  default-binder: kafka
+  kafka.binder:
+    brokers: kafka
+    replication-factor: 1
+  bindings:
+    messageProcessor-in-0.consumer:
+      partitioned: true
+      instanceCount: 2
+      instanceIndex: 1

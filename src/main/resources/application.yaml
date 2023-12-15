@@ -1,0 +1,56 @@
+spring.application.name: recommendation
+server:
+  port: 7002
+  error:
+    include-message: always
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: recommendation-db
+      auto-index-creation: true
+
+app.eureka-server: localhost
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${app.eureka-server}:8761/eureka/
+    initialInstanceInfoReplicationIntervalSeconds: 5
+    registryFetchIntervalSeconds: 5
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 5
+
+spring.cloud:
+  function.definition: messageProcessor
+  stream:
+    defaultBinder: kafka
+    default.contentType: application/json
+    bindings:
+      messageProcessor-in-0:
+        destination: recommendations
+        group: recommendationsGroup
+        consumer:
+          maxAttempts: 3
+          backOffInitialInterval: 500
+          backOffMaxInterval: 1000
+          backOffMultiplier: 2.0
+
+spring.cloud.stream.kafka:
+  bindings.messageProcessor-in-0.consumer:
+    enableDlq: true
+  binder:
+    autoAddPartitions: true
+    brokers: 127.0.0.1
+    defaultBrokerPort: 9092
+
+logging:
+  level:
+    root: INFO
+    com.example: DEBUG
+    org.springframework.data.mongodb.core.ReactiveMongoTemplate: DEBUG
+
+management.endpoint.health.show-details: "ALWAYS"
+management.endpoints.web.exposure.include: "*"

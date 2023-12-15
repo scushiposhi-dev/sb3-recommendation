@@ -1,0 +1,68 @@
+openapi: 3.0.3
+info:
+  title: Recommendation
+  description: Recommendation
+  version: 1.0.0
+paths:
+  /v1/recommendation:
+    get:
+      tags:
+        - RecommendationService
+      operationId: getRecommendationsByProductId
+      description: retrieve all recommendations by product id
+      parameters:
+        - in: query
+          name: productId
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: recommendaitons retrieved
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Recommendation'
+        404:
+          description: recommendations not found
+  /v1/recommendation/{id}:
+    get:
+      tags:
+        - RecommendationService
+      operationId: getRecommendationsByProductId
+      description: retrieve recommendation by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: recommendations retrieved
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Recommendation'
+        404:
+          description: recommendations not found
+
+components:
+  schemas:
+    Recommendation:
+      type: object
+      properties:
+        productId:
+          type: integer
+        recommendationId:
+          type: integer
+        rate:
+          type: integer
+        content:
+          type: string
+        author:
+          type: string
+        serviceAddress:
+          type: string
